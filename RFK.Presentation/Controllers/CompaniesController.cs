@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RFK.Presentation.ModelBinders;
+﻿using RFK.Presentation.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 
@@ -9,7 +9,7 @@ namespace RFK.Presentation.Controllers;
 [ApiController]
 public class CompaniesController : ControllerBase
 {
-    private readonly IServiceManager _service;
+	private readonly IServiceManager _service;
 
     public CompaniesController(IServiceManager service) => _service = service;
 

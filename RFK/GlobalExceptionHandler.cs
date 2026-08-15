@@ -15,7 +15,7 @@ namespace RFK
             _logger = logger;
         }
 
-        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext,
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, 
             Exception exception, CancellationToken cancellationToken)
         {
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -43,6 +43,4 @@ namespace RFK
             return true;
         }
     }
-
-
 }

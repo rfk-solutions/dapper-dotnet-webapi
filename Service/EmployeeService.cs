@@ -2,29 +2,38 @@
 using Entities.Exceptions;
 using Service.Contracts;
 using Shared.DataTransferObjects;
+using Shared.RequestFeatures;
 
 namespace Service
 {
     internal sealed class EmployeeService : IEmployeeService
-    {
-        private readonly IRepositoryManager _repository;
-        private readonly ILoggerManager _logger;
-
-        public EmployeeService(IRepositoryManager repository, ILoggerManager logger)
-        {
-            _repository = repository;
-            _logger = logger;
+    { 
+        private readonly IRepositoryManager _repository; 
+        private readonly ILoggerManager _logger; 
+        
+        public EmployeeService(IRepositoryManager repository, ILoggerManager logger) 
+        { 
+            _repository = repository; 
+            _logger = logger; 
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployees(Guid companyId)
+        public async Task<(IEnumerable<EmployeeDto> employees, MetaData metaData)>
+            GetEmployees(Guid companyId, EmployeeParameters employeeParameters)
         {
+            if (!employeeParameters.ValidAgeRange)
+                throw new MaxAgeRangeBadRequestException();
+
             var company = await _repository.Company.GetCompany(companyId);
             if (company is null)
                 throw new CompanyNotFoundException(companyId);
 
-            var employees = await _repository.Employee.GetEmployees(companyId);
+            var employeesWithMetaData = await _repository.Employee
+                .GetEmployees(companyId, employeeParameters);
 
-            return employees;
+            var employees = employeesWithMetaData
+                .Select(e => new EmployeeDto(e.EmployeeId, e.Name, e.Age, e.Position));
+
+            return (employees: employees, metaData: employeesWithMetaData.MetaData);
         }
 
         public async Task<EmployeeDto> GetEmployee(Guid companyId, Guid id)
@@ -40,7 +49,7 @@ namespace Service
             return employee;
         }
 
-        public async Task<EmployeeDto> CreateEmployeeForCompany(Guid companyId,
+        public async Task<EmployeeDto> CreateEmployeeForCompany(Guid companyId, 
             EmployeeForCreationDto employeeDto)
         {
             var company = await _repository.Company.GetCompany(companyId);

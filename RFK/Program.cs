@@ -1,11 +1,11 @@
-
-using Contracts;
-using Microsoft.AspNetCore.HttpOverrides;
-using NLog;
-using Repository;
 using RFK;
 using RFK.Extensions;
 using RFK.Migrations;
+using Contracts;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Logging;
+using NLog;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,23 +21,21 @@ builder.Services.ConfigureFluentMigrator(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 
-
 builder.Services.AddControllers()
-    .AddApplicationPart(typeof(RFK.Presentation.AssemblyReference).Assembly);
+	.AddApplicationPart(typeof(RFK.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
 
-var logger = app.Services.GetRequiredService<ILoggerManager>();
-app.ConfigureExceptionHandler(logger);
+app.UseExceptionHandler(opt => { });
 
 if (app.Environment.IsProduction())
-    app.UseHsts();
+	app.UseHsts();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    ForwardedHeaders = ForwardedHeaders.All
+	ForwardedHeaders = ForwardedHeaders.All
 });
 
 app.UseCors("CorsPolicy");
