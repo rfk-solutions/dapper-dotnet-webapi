@@ -21,6 +21,8 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity(builder.Configuration);
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.ConfigureSwagger();
+
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(RFK.Presentation.AssemblyReference).Assembly);
@@ -41,8 +43,15 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 
 app.UseCors("CorsPolicy");
 
+
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "RFK SOLUTIONS API");
+});
+
 
 app.MapControllers();
 

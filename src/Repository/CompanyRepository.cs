@@ -191,13 +191,12 @@ namespace Repository
 
         public async Task<CompanyDto> GetCompanyByEmployeeId(Guid employeeId)
         {
-            var procName = "ShowCompanyByEmployeeId";
+            var query = CompanyQuery.SelectCompanyByEmployeeIdQuery;
 
             using (var connection = _context.CreateConnection())
             {
                 var company = await connection
-                    .QueryFirstOrDefaultAsync<CompanyDto>(procName,
-                    new { id = employeeId }, commandType: CommandType.StoredProcedure);
+                    .QueryFirstOrDefaultAsync<CompanyDto>(query, new { employeeId });
 
                 return company;
             }

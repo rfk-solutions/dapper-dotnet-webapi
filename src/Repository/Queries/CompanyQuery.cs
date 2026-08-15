@@ -38,5 +38,12 @@
         @"UPDATE Companies
           SET [Name] = @name, Address = @address, Country = @country
           WHERE CompanyId = @id";
+
+        public const string SelectCompanyByEmployeeIdQuery =
+        @"SELECT c.CompanyId, c.[Name], 
+          CONCAT(c.[Address], ', ', c.Country) AS FullAddress
+          FROM Companies c
+          INNER JOIN Employees e ON c.CompanyId = e.CompanyId
+          WHERE e.EmployeeId = @employeeId";
     }
 }
