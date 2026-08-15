@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFK.Presentation", "RFK.Pre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{FB06CCD0-DBED-47A0-8748-6A503148E7AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Identity.Dapper", "AspNetCore.Identity.Dapper\AspNetCore.Identity.Dapper.csproj", "{51D9717F-1D46-4FB3-A08D-0E3071E979F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{FB06CCD0-DBED-47A0-8748-6A503148E7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB06CCD0-DBED-47A0-8748-6A503148E7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB06CCD0-DBED-47A0-8748-6A503148E7AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51D9717F-1D46-4FB3-A08D-0E3071E979F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51D9717F-1D46-4FB3-A08D-0E3071E979F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51D9717F-1D46-4FB3-A08D-0E3071E979F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51D9717F-1D46-4FB3-A08D-0E3071E979F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
