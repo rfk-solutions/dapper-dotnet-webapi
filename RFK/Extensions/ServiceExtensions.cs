@@ -2,6 +2,8 @@
 using FluentMigrator.Runner;
 using LoggerService;
 using Repository;
+using Service;
+using Service.Contracts;
 using System.Reflection;
 
 namespace RFK.Extensions;
@@ -35,6 +37,10 @@ public static class ServiceExtensions
                         .For.Migrations());
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
       services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+    public static void ConfigureServiceManager(this IServiceCollection services) =>
+       services.AddScoped<IServiceManager, ServiceManager>();
+
 
 
 }
