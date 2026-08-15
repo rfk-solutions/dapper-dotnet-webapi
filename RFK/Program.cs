@@ -1,4 +1,5 @@
 
+using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using Repository;
@@ -26,7 +27,8 @@ builder.Services.AddControllers()
 
 var app = builder.Build();
 
-app.UseExceptionHandler(opt => { });
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 
 if (app.Environment.IsProduction())
     app.UseHsts();

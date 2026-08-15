@@ -2,6 +2,7 @@
 using Dapper;
 using Repository.Queries;
 using Shared.DataTransferObjects;
+using System.Data;
 
 namespace Repository
 {
@@ -35,6 +36,46 @@ namespace Repository
                     .QuerySingleOrDefaultAsync<EmployeeDto>(query, param);
 
                 return employee;
+            }
+        }
+
+        public async Task<EmployeeDto> CreateEmployeeForCompany(Guid companyId,
+            EmployeeForCreationDto employeeDto)
+        {
+            var query = EmployeeQuery.InsertEmployeeWithOutputQuery;
+
+            var param = new DynamicParameters(employeeDto);
+            param.Add("id", companyId, DbType.Guid);
+
+            using (var connection = _context.CreateConnection())
+            {
+                var id = await connection.QuerySingleAsync<Guid>(query, param);
+
+                return new EmployeeDto(id, employeeDto.Name,
+                    employeeDto.Age, employeeDto.Position);
+            }
+        }
+
+        public async Task DeleteEmployee(Guid employeeId)
+        {
+            var query = EmployeeQuery.DeleteEmployeeQuery;
+
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, new { employeeId });
+            }
+        }
+
+        public async Task UpdateEmployee(Guid employeeId, EmployeeForUpdateDto employee)
+        {
+            var query = EmployeeQuery.UpdateEmployeeQuery;
+
+            var param = new DynamicParameters(employee);
+            param.Add("employeeId", employeeId, DbType.Guid);
+
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, param);
             }
         }
     }

@@ -39,5 +39,46 @@ namespace Service
 
             return employee;
         }
+
+        public async Task<EmployeeDto> CreateEmployeeForCompany(Guid companyId,
+            EmployeeForCreationDto employeeDto)
+        {
+            var company = await _repository.Company.GetCompany(companyId);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employee = await _repository.Employee
+                .CreateEmployeeForCompany(companyId, employeeDto);
+
+            return employee;
+        }
+
+        public async Task DeleteEmployeeForCompany(Guid companyId, Guid employeeId)
+        {
+            var company = await _repository
+                .Company.GetCompany(companyId);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeForCompany = _repository
+                .Employee.GetEmployee(companyId, employeeId);
+            if (employeeForCompany is null)
+                throw new EmployeeNotFoundException(employeeId);
+
+            await _repository.Employee.DeleteEmployee(employeeId);
+        }
+
+        public async Task UpdateEmployeeForCompany(Guid companyId, Guid id, EmployeeForUpdateDto employee)
+        {
+            var company = await _repository.Company.GetCompany(companyId);
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            var employeeDto = await _repository.Employee.GetEmployee(companyId, id);
+            if (employeeDto is null)
+                throw new EmployeeNotFoundException(id);
+
+            await _repository.Employee.UpdateEmployee(id, employee);
+        }
     }
 }
