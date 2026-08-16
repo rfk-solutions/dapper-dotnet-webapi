@@ -1,6 +1,6 @@
 # 🚀 RFK Solutions — ASP.NET Core & Dapper Template
 
-[![.NET 9](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet\&logoColor=white)](https://dotnet.microsoft.com/)
+[![.NET 9](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet\&logoColor=white)](https://dotnet.microsoft.com/)
 [![Dapper](https://img.shields.io/badge/ORM-Dapper-CC2929?logo=csharp\&logoColor=white)](https://github.com/DapperLib/Dapper)
 [![SQL Server](https://img.shields.io/badge/Database-SQL%20Server-CC2927?logo=microsoftsqlserver\&logoColor=white)](https://www.microsoft.com/sql-server/)
 [![Swagger](https://img.shields.io/badge/API-Swagger-85EA2D?logo=swagger\&logoColor=black)](https://swagger.io/)
