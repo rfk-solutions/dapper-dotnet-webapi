@@ -22,27 +22,27 @@ A production-ready \*\*ASP.NET Core Web API\*\* enterprise boilerplate featuring
 
 
 
-\## 💡 About ASP.NET Core Web API \& Dapper
+\## 💡 Overview: ASP.NET Core Web API \& Dapper
 
 
 
-\### What is ASP.NET Core Web API?
+\### ASP.NET Core Web API
 
-ASP.NET Core Web API is a cross-platform, high-performance framework designed for building HTTP-based RESTful services. It acts as the backend middleware that securely exposes endpoints and exchanges JSON payloads with modern frontends, mobile applications, and external integrations.
-
-
-
-\### What is Dapper and Why Use It?
-
-\*\*Dapper\*\* is a lightweight micro-ORM (Object-Relational Mapper) for .NET, often referred to as the \*\*"King of Micro-ORMs"\*\*.
+ASP.NET Core Web API is a cross-platform, high-performance framework designed for building HTTP-based RESTful services. It acts as the backend middleware that exposes secure endpoints and exchanges JSON payloads with modern web frontends, mobile applications, and external integrations.
 
 
 
-\* \*\*Near-Native Performance\*\*: Dapper extends `IDbConnection` to execute raw SQL and map query results directly to C# objects with execution speeds virtually identical to a raw `SqlDataReader`.
+\### Dapper ORM
 
-\* \*\*Full SQL Control\*\*: Unlike heavy full-featured ORMs, Dapper lets developers write precise SQL queries, handle multi-mapping, and execute stored procedures without unpredictable query generation.
+\*\*Dapper\*\* is a high-performance micro-ORM (Object-Relational Mapper) for .NET, widely recognized as the \*\*"King of Micro-ORMs"\*\*.
 
-\* \*\*Minimal Overhead\*\*: Operates with virtually zero memory footprint overhead by avoiding complex entity change-tracking mechanisms.
+
+
+\* \*\*Near-Native Speed\*\*: Dapper extends `IDbConnection` to execute raw SQL and map results directly to C# objects with execution speeds virtually identical to a raw `SqlDataReader`.
+
+\* \*\*Full Query Control\*\*: Unlike heavy full-featured ORMs, Dapper lets developers write precise SQL queries, manage multi-mapping, and execute stored procedures without unpredictable query generation.
+
+\* \*\*Low Memory Footprint\*\*: Keeps system overhead minimal by eliminating entity change-tracking mechanisms.
 
 
 
@@ -50,17 +50,21 @@ ASP.NET Core Web API is a cross-platform, high-performance framework designed fo
 
 
 
-\## 🔑 Default Authentication Credentials
+\## 🔐 Default Authentication Credentials
 
 
 
-For local setup and initial login testing, use the pre-configured default system administrator account:
+Use these pre-configured credentials for local testing and initial login access:
 
 
 
-\* \*\*Username / Email\*\*: `admin@rfksolutions.com`
+| Attribute | Default Value |
 
-\* \*\*Password\*\*: `Admin123!`
+| :--- | :--- |
+
+| \*\*Username / Email\*\* | `admin@rfksolutions.com` |
+
+| \*\*Password\*\* | `Admin123!` |
 
 
 
@@ -86,15 +90,15 @@ RFK.sln
 
 │   ├── Entities/               # Domain entities, DTOs, and Identity models
 
-│   ├── LoggerService/          # Custom logging middleware and NLog configurations
+│   ├── LoggerService/          # Custom logging middleware and provider configurations
 
 │   ├── Repository/             # Dapper execution context, SQL queries, and Stored Procedures
 
-│   ├── RFK/                    # Web API entry point, DI config, appsettings, and Program.cs
+│   ├── RFK/                    # Web API entry point, DI container, appsettings, and Program.cs
 
 │   ├── RFK.Presentation/       # Decoupled REST API controllers assembly
 
-│   ├── Service/                # Business logic implementation and workflow orchestration
+│   ├── Service/                # Core business logic implementation and workflow orchestration
 
 │   ├── Service.Contracts/      # Service layer abstractions and contracts
 
