@@ -100,8 +100,22 @@ public static class ServiceExtensions
             s.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "RFK SOLUTIONS API",
-                Version = "v1"
+                Description = "EswatiniEmployees API by RFK Solutions",
+                Contact = new OpenApiContact
+                {
+                    Name = "Njabulo Mamba",
+                    Email = "njabulo@rfksolutions.net",
+                    Url = new Uri("https://github.com/njabulo240"),
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "EswatiniEmployees API LICX",
+                    Url = new Uri("https://example.com/license"),
+                }
             });
+            var xmlFile = $"{typeof(Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            s.IncludeXmlComments(xmlPath);
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -110,22 +124,22 @@ public static class ServiceExtensions
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer"
             });
+
             s.AddSecurityRequirement(new OpenApiSecurityRequirement()
             {
                 {
-                  new OpenApiSecurityScheme
-                   {
-                         Reference = new OpenApiReference
-                          {
-                             Type = ReferenceType.SecurityScheme,
-                             Id = "Bearer"
-                          },
-                             Name = "Bearer",
-                   },
-                             new List<string>()
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                        Name = "Bearer",
+                    },
+                    new List<string>()
                 }
             });
-
         });
     }
 }

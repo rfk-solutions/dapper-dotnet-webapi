@@ -25,9 +25,7 @@ namespace Service
 
         public async Task<CompanyDto> GetCompany(Guid id)
         {
-            var company = await _repository.Company.GetCompany(id);
-            if (company is null)
-                throw new CompanyNotFoundException(id);
+            var company = await GetCompanyAndCheckIfItExists(id);
 
             return company;
         }
@@ -46,7 +44,6 @@ namespace Service
             else
                 return await _repository.Company.CreateCompany(company);
         }
-
         public async Task<IEnumerable<CompanyDto>> GetByIds(IEnumerable<Guid> ids)
         {
             if (ids is null)
@@ -76,18 +73,14 @@ namespace Service
 
         public async Task DeleteCompany(Guid companyId)
         {
-            var company = await _repository.Company.GetCompany(companyId);
-            if (company is null)
-                throw new CompanyNotFoundException(companyId);
+            var company = await GetCompanyAndCheckIfItExists(companyId);
 
             await _repository.Company.DeleteCompany(companyId);
         }
 
         public async Task UpdateCompany(Guid companyId, CompanyForUpdateDto companyForUpdate)
         {
-            var companyEntity = await _repository.Company.GetCompany(companyId);
-            if (companyEntity is null)
-                throw new CompanyNotFoundException(companyId);
+            var company = await GetCompanyAndCheckIfItExists(companyId);
 
             if (companyForUpdate.Employees is not null && companyForUpdate.Employees.Any())
             {
@@ -97,9 +90,22 @@ namespace Service
 
         public async Task<CompanyDto> GetCompanyByEmployeeId(Guid employeeId)
         {
+            var employeeDb = await _repository.Company.GetCompanyByEmployeeId(employeeId);
+            if (employeeDb is null)
+                throw new EmployeeNotFoundException(employeeId);
+
             var company = await _repository.Company.GetCompanyByEmployeeId(employeeId);
 
             return company;
+        }
+
+        private async Task<CompanyDto> GetCompanyAndCheckIfItExists(Guid companyId)
+        {
+            var companyEntity = await _repository.Company.GetCompany(companyId);
+            if (companyEntity is null)
+                throw new CompanyNotFoundException(companyId);
+
+            return companyEntity;
         }
     }
 }

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RFK.Presentation</name>
+    </assembly>
+    <members>
+        <member name="T:RFK.Presentation.Controllers.AuthenticationController">
+            <summary>
+            Handles user registration and authentication operations.
+            </summary>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.AuthenticationController.RegisterUser(Shared.DataTransferObjects.UserForRegistrationDto)">
+            <summary>
+            Registers a new user.
+            </summary>
+            <param name="userForRegistration">The user registration details.</param>
+            <returns>A 201 Created status code on success, or 400 Bad Request with validation errors.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.AuthenticationController.Authenticate(Shared.DataTransferObjects.UserForAuthenticationDto)">
+            <summary>
+            Authenticates a user and generates a JWT token.
+            </summary>
+            <param name="user">User credentials for logging in.</param>
+            <returns>An object containing the bearer token if credentials are valid.</returns>
+        </member>
+        <member name="T:RFK.Presentation.Controllers.CompaniesController">
+            <summary>
+            Manages company records and operations.
+            </summary>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.GetCompanies">
+            <summary>
+            Gets all companies.
+            </summary>
+            <returns>A list of companies.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.GetCompany(System.Guid)">
+            <summary>
+            Gets a single company by its unique identifier.
+            </summary>
+            <param name="id">The GUID of the company to retrieve.</param>
+            <returns>The requested company details.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.GetCompaniesWithEmployees">
+            <summary>
+            Gets companies along with their associated employees.
+            </summary>
+            <returns>A list of companies including employee records.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.CreateCompany(Shared.DataTransferObjects.CompanyForCreationDto)">
+            <summary>
+            Creates a new company.
+            </summary>
+            <param name="company">The company creation data transfer object.</param>
+            <returns>The newly created company object.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.GetCompanyCollection(System.String)">
+            <summary>
+            Gets a collection of companies by comma-separated GUID string.
+            </summary>
+            <param name="ids">Comma-separated list of company GUIDs (e.g., "id1,id2,id3").</param>
+            <returns>A collection of companies matching the specified IDs.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.CreateCompanyCollection(System.Collections.Generic.IEnumerable{Shared.DataTransferObjects.CompanyForCreationDto})">
+            <summary>
+            Creates multiple companies in a single request.
+            </summary>
+            <param name="companyCollection">List of companies to create.</param>
+            <returns>The created companies and their generated IDs.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.DeleteCompany(System.Guid)">
+            <summary>
+            Deletes a specific company by its ID.
+            </summary>
+            <param name="id">The GUID of the company to delete.</param>
+            <returns>No content on successful deletion.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.UpdateCompany(System.Guid,Shared.DataTransferObjects.CompanyForUpdateDto)">
+            <summary>
+            Updates an existing company record.
+            </summary>
+            <param name="id">The GUID of the company to update.</param>
+            <param name="company">The updated company information.</param>
+            <returns>No content on successful update.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.CompaniesController.GetCompanyByEmployeeId(System.Guid)">
+            <summary>
+            Gets the company associated with a specific employee ID.
+            </summary>
+            <param name="id">The GUID of the employee.</param>
+            <returns>The company details associated with the employee.</returns>
+        </member>
+        <member name="T:RFK.Presentation.Controllers.EmployeesController">
+            <summary>
+            Manages employees tied to a specific company.
+            </summary>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.EmployeesController.GetEmployeesForCompany(System.Guid,Shared.RequestFeatures.EmployeeParameters)">
+            <summary>
+            Gets a paged list of employees for a specific company.
+            </summary>
+            <param name="companyId">The GUID of the company.</param>
+            <param name="employeeParameters">Paging and filtering parameters.</param>
+            <returns>A collection of employees matching the specified parameters.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.EmployeesController.GetEmployeeForCompany(System.Guid,System.Guid)">
+            <summary>
+            Gets a single employee for a specific company by employee ID.
+            </summary>
+            <param name="companyId">The GUID of the company.</param>
+            <param name="id">The GUID of the employee.</param>
+            <returns>The requested employee details.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.EmployeesController.CreateEmployeeForCompany(System.Guid,Shared.DataTransferObjects.EmployeeForCreationDto)">
+            <summary>
+            Creates a new employee for a specific company.
+            </summary>
+            <param name="companyId">The GUID of the company.</param>
+            <param name="employee">The employee creation data transfer object.</param>
+            <returns>The newly created employee object.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.EmployeesController.DeleteEmployeeForCompany(System.Guid,System.Guid)">
+            <summary>
+            Deletes an employee from a specific company.
+            </summary>
+            <param name="companyId">The GUID of the company.</param>
+            <param name="id">The GUID of the employee to delete.</param>
+            <returns>No content on successful deletion.</returns>
+        </member>
+        <member name="M:RFK.Presentation.Controllers.EmployeesController.UpdateEmployeeForCompany(System.Guid,System.Guid,Shared.DataTransferObjects.EmployeeForUpdateDto)">
+            <summary>
+            Updates an employee's details for a specific company.
+            </summary>
+            <param name="companyId">The GUID of the company.</param>
+            <param name="id">The GUID of the employee to update.</param>
+            <param name="employee">The updated employee information.</param>
+            <returns>No content on successful update.</returns>
+        </member>
+    </members>
+</doc>

@@ -2,45 +2,41 @@
 using Entities.ErrorModel;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
-using System.Net;
 
-namespace RFK
+namespace RFK;
+
+public class GlobalExceptionHandler : IExceptionHandler
 {
-    public class GlobalExceptionHandler : IExceptionHandler
+    private readonly ILoggerManager _logger;
+
+    public GlobalExceptionHandler(ILoggerManager logger)
     {
-        private readonly ILoggerManager _logger;
+        _logger = logger;
+    }
 
-        public GlobalExceptionHandler(ILoggerManager logger)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        var statusCode = exception switch
         {
-            _logger = logger;
-        }
+            NotFoundException => StatusCodes.Status404NotFound,
+            BadRequestException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError
+        };
 
-        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, 
-            Exception exception, CancellationToken cancellationToken)
+        httpContext.Response.StatusCode = statusCode;
+        httpContext.Response.ContentType = "application/json";
+
+        _logger.LogError($"Something went wrong: {exception.Message}");
+
+        await httpContext.Response.WriteAsync(new ErrorDetails
         {
-            httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            httpContext.Response.ContentType = "application/json";
+            StatusCode = statusCode,
+            Message = exception.Message
+        }.ToString(), cancellationToken);
 
-            var contextFeature = httpContext.Features.Get<IExceptionHandlerFeature>();
-            if (contextFeature != null)
-            {
-                httpContext.Response.StatusCode = contextFeature.Error switch
-                {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    BadRequestException => StatusCodes.Status400BadRequest,
-                    _ => StatusCodes.Status500InternalServerError
-                };
-
-                _logger.LogError($"Something went wrong: {contextFeature.Error}");
-
-                await httpContext.Response.WriteAsync(new ErrorDetails()
-                {
-                    StatusCode = httpContext.Response.StatusCode,
-                    Message = contextFeature.Error.Message
-                }.ToString());
-            }
-
-            return true;
-        }
+        return true; // Mark exception as fully handled
     }
 }

@@ -1,6 +1,6 @@
-﻿using RFK.Migrations;
-using Contracts;
+﻿using Contracts;
 using FluentMigrator.Runner;
+using RFK.Migrations;
 
 namespace RFK.Extensions
 {
@@ -17,12 +17,12 @@ namespace RFK.Extensions
 
                 try
                 {
-                    databaseService.CreateDatabase("RFKEmployeesDapper");
+                    databaseService.CreateDatabase("EswatiniEmployeesDapper");
 
                     migrationService.ListMigrations();
                     migrationService.MigrateUp();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     var logger = app.Services.GetRequiredService<ILoggerManager>();
                     logger.LogError($"Exception occurred during the database creation: {ex}");
