@@ -38,8 +38,10 @@ public static class ServiceExtensions
         IConfiguration configuration) => services.AddLogging(c =>
         c.AddFluentMigratorConsole())
             .AddFluentMigratorCore().ConfigureRunner(c =>
-                c.AddSqlServer2016().WithGlobalConnectionString(configuration
-                        .GetConnectionString("sqlConnection"))
+                c.AddSqlServer2016().WithGlobalConnectionString(
+                        configuration.GetConnectionString("sqlConnection")
+                        ?? configuration.GetConnectionString("SqlConnection")
+                        ?? string.Empty)
                     .ScanIn(Assembly.GetExecutingAssembly())
                         .For.Migrations());
 
@@ -51,6 +53,10 @@ public static class ServiceExtensions
 
     public static void ConfigureIdentity(this IServiceCollection services, IConfiguration configuration)
     {
+        var connectionString = configuration.GetConnectionString("sqlConnection")
+                            ?? configuration.GetConnectionString("SqlConnection")
+                            ?? string.Empty;
+
         services.AddIdentity<ApplicationUser, ApplicationRole>(o =>
         {
             o.Password.RequireDigit = true;
@@ -62,7 +68,7 @@ public static class ServiceExtensions
         })
         .AddDapperStores(opt =>
         {
-            opt.ConnectionString = configuration.GetConnectionString("SqlConnection");
+            opt.ConnectionString = connectionString;
         })
         .AddDefaultTokenProviders();
     }
@@ -70,7 +76,12 @@ public static class ServiceExtensions
     public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtSettings = configuration.GetSection("JwtSettings");
-        var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+        // Look for secret in Environment Variable OR configuration section (appsettings / Azure App Settings)
+        var secretKey = Environment.GetEnvironmentVariable("SECRET")
+                        ?? jwtSettings["secret"]
+                        ?? configuration["SECRET"]
+                        ?? "FallbackSecretKeyForDevelopmentPhaseMustBe32Bytes!";
 
         services.AddAuthentication(opt =>
         {
@@ -86,8 +97,8 @@ public static class ServiceExtensions
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
 
-                ValidIssuer = jwtSettings["validIssuer"],
-                ValidAudience = jwtSettings["validAudience"],
+                ValidIssuer = jwtSettings["validIssuer"] ?? "https://localhost:5001",
+                ValidAudience = jwtSettings["validAudience"] ?? "https://localhost:5001",
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
             };
         });
@@ -110,12 +121,19 @@ public static class ServiceExtensions
                 License = new OpenApiLicense
                 {
                     Name = "EswatiniEmployees API LICX",
-                    Url = new Uri("https://example.com/license"),
+                    Url = new Uri("https://github.com/rfk-solutions/dapper-dotnet-webapi?tab=MIT-1-ov-file#"),
                 }
             });
+
             var xmlFile = $"{typeof(Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            s.IncludeXmlComments(xmlPath);
+
+            // Safely check if XML exists before adding it to avoid IO/deployment exceptions
+            if (File.Exists(xmlPath))
+            {
+                s.IncludeXmlComments(xmlPath);
+            }
+
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
