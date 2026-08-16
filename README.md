@@ -8,6 +8,11 @@
 
 A production-ready **ASP.NET Core Web API template** built with **Dapper, SQL Server, ASP.NET Core Identity, FluentMigrator, JWT authentication**, and a clean separation between presentation, services, and data access.
 
+## 🌐 Live Demo
+
+**[View Live API Demo](https://dappa-asp-net-webapi-cnhkdnf8hsfchnbg.southafricanorth-01.azurewebsites.net/swagger)**
+
+> The demo is hosted on Microsoft Azure and can be used to explore the deployed API.
 ---
 
 ## ✨ Features
